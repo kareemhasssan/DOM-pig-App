@@ -1,4 +1,4 @@
-var scoers, roundscore, activeplayer;
+var scoers, roundscore, activeplayer,gamePlaying;
 
 
 // document.querySelector('#current-' +activeplayer).textContent =dice
@@ -9,46 +9,49 @@ var scoers, roundscore, activeplayer;
 init()
 
 document.querySelector(".btn-roll").addEventListener("click", function () {
-  //1.Random number
-  var dice = Math.floor(Math.random() * 6) + 1;
-  //2.Display the result
+    if (gamePlaying) {
+              //1.Random number
+      var dice = Math.floor(Math.random() * 6) + 1;
+      //2.Display the result
 
-  var diceDOM = document.querySelector(".dice");
-  diceDOM.style.display = "block";
-  diceDOM.src = "dice-" + dice + ".png";
+      var diceDOM = document.querySelector(".dice");
+      diceDOM.style.display = "block";
+      diceDOM.src = "dice-" + dice + ".png";
 
 
-  //3.Update
-  if(dice !== 1)
-  {
-    roundscore+=dice
-    document.querySelector('#current-' +activeplayer).textContent=roundscore
-  }
-  else {
-       nextplayer()
-  }
+      //3.Update
+      if(dice !== 1)
+      {
+        roundscore+=dice
+        document.querySelector('#current-' +activeplayer).textContent=roundscore
+      }
+      else {
+          nextplayer()
+      }
+    }
 });
 
 
 document.querySelector('.btn-hold').addEventListener('click',function() {
    //Add current score to global
-  scoers[activeplayer]+=roundscore
+  if (gamePlaying) {
+    scoers[activeplayer]+=roundscore
 
-   //Update the ui
-  document.querySelector('#score-'+activeplayer).textContent=scoers[activeplayer]
+    //Update the ui
+    document.querySelector('#score-'+activeplayer).textContent=scoers[activeplayer]
 
-  //check if win
-  if (scoers[activeplayer]>=20) {
-     document.querySelector('#name-'+activeplayer).textContent='Winner!'
-     document.querySelector('.dice').style.display='none'
-     document.querySelector('.player-'+activeplayer+'-panel').classList.add('Winner')
-     document.querySelector('.player-'+activeplayer+'-panel').classList.remove('active')
-     nextplayer()
-  }else {
-    //next palyer
-    nextplayer()
+    //check if win
+    if (scoers[activeplayer]>=20) {
+      document.querySelector('#name-'+activeplayer).textContent = 'Winner!'
+      document.querySelector('.dice').style.display='none'
+      document.querySelector('.player-'+ activeplayer +'-panel').classList.add('Winner!')
+      document.querySelector('.player-'+ activeplayer +'-panel').classList.remove('active')
+      gamePlaying=false
+    }else {
+      //next palyer
+      nextplayer()
+    }
   }
-
 })
 
 document.querySelector('.btn-new').addEventListener('click',init)
@@ -61,7 +64,7 @@ function nextplayer() {
   document.getElementById('current-1').textContent ='0'
 
   document.querySelector('.player-0-panel').classList.toggle('active')
-  document.querySelector('.player-1-panel').classList.toggle('a ctive')
+  document.querySelector('.player-1-panel').classList.toggle('active')
   // document.querySelector('.player-0-panel').classList.remove('active')
   // document.querySelector('.player-1-panel').classList.add('active')
 
@@ -69,22 +72,21 @@ function nextplayer() {
 }
 
 function init() {
-  scoers = [0, 0];
-  roundscore = 0;
-  activeplayer = 0;
-  document.querySelector(".dice").style.display = "none"
+      scoers = [0, 0]
+      roundscore = 0
+      activeplayer = 0
+      gamePlaying=true
+      document.querySelector(".dice").style.display = "none"
 
-document.getElementById("score-0").textContent = "0"
-document.getElementById("score-1").textContent = "0"
-document.getElementById("current-0").textContent = "0"
-document.getElementById("current-1").textContent = "0"
-document.getElementById('name-0').textContent='player 1'
-document.getElementById('name-1').textContent='player 1'
-document.querySelector('.player-0-panel').classList.remove('winner')
-document.querySelector('.player-1-panel').classList.remove('winner')
-document.querySelector('.player-0-panel').classList.remove('active')
-document.querySelector('.player-1-panel').classList.remove('active')
-document.querySelector('.player-0-panel').classList.add('active')
-
-
+    document.getElementById("score-0").textContent = "0"
+    document.getElementById("score-1").textContent = "0"
+    document.getElementById("current-0").textContent = "0"
+    document.getElementById("current-1").textContent = "0"
+    document.getElementById('name-0').textContent='player 1'
+    document.getElementById('name-1').textContent='player 2'
+    document.querySelector('.player-0-panel').classList.remove('winner')
+    document.querySelector('.player-1-panel').classList.remove('winner')
+    document.querySelector('.player-0-panel').classList.remove('active')
+    document.querySelector('.player-1-panel').classList.remove('active')
+    document.querySelector('.player-0-panel').classList.add('active')
 }
